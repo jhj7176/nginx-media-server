@@ -1,0 +1,14 @@
+# version: '3.8'
+
+services:
+  nginx-media-server:
+    image: hyeongjin0319/nginx-media-server:latest
+    container_name: nginx-media-server
+    platform: linux/amd64
+    ports:
+      - "1935:1935"  # RTMP
+      - "8080:8080"  # HLS and DASH
+    volumes:
+      - ./media:/media  
+      - ./nginx-config/nginx:/etc/nginx 
+    restart: unless-stopped
