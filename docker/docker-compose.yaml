@@ -11,4 +11,5 @@ services:
     volumes:
       - ../media:/media  
       - ../nginx-config/nginx:/etc/nginx 
+      - ../logs:/var/log/nginx
     restart: unless-stopped

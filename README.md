@@ -7,7 +7,7 @@ This docker image can be used to create an RTMP server to serv HLS, DASH and RTM
 * **docker hub**: <https://hub.docker.com/r/woonizzooni/nginx-media-server>
 
 ## Dockefile links
-- [woonizzooni/nginx-media-server:latest](https://github.com/woonizzooni/nginx-media-server/blob/main/Dockerfile)
+- [woonizzooni/nginx-media-server:latest]()
 
 
 ## Reference Links

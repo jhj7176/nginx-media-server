@@ -3,7 +3,7 @@ FROM --platform=linux/amd64 alpine:latest
 
 LABEL maintainer="NGINX-MEDIA_SERVER maintainer <jhj7176@gmail.com>"
 
-# versions of nginx and nginx-rtmp-module to use
+# versions of nginx, nginx-rtmp-module, and nginx-vod-module to use
 ENV NGINX_VERSION 1.18.0
 ENV RTMP_MODULE_VERSION 1.2.1
 
@@ -12,20 +12,22 @@ RUN set -x \
     && addgroup -g 101 -S nginx \
     && adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -G nginx -g nginx nginx \
 # install binaries & other dependencies from the published packaging sources
-    && apk --no-cache add gcc libc-dev linux-headers pcre-dev zlib-dev ca-certificates openssl libressl-dev make \
+    && apk --no-cache add gcc libc-dev linux-headers pcre-dev zlib-dev ca-certificates openssl libressl-dev make wget git \
     && rm -rf /var/cache/apk/*
 
 # create working directory to build packages then go into.
 RUN mkdir -p /tmp/build && cd /tmp/build
 
-# download & decompress nginx & nginx-rtmp-module .tar.gz(gzipped tarball)
+# download & decompress nginx and nginx-rtmp-module .tar.gz(gzipped tarball)
 RUN wget -O nginx-${NGINX_VERSION}.tar.gz https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
     wget -O nginx-rtmp-module-${RTMP_MODULE_VERSION}.tar.gz https://github.com/arut/nginx-rtmp-module/archive/v${RTMP_MODULE_VERSION}.tar.gz && \
     tar -zxf nginx-${NGINX_VERSION}.tar.gz && \
     tar -zxf nginx-rtmp-module-${RTMP_MODULE_VERSION}.tar.gz
 
-# build and install nginx with nginx-rtmp-module, clear working directory after build
-# Edit this line if you want to add more modules or change options.
+# clone nginx-vod-module repository
+RUN git clone https://github.com/kaltura/nginx-vod-module /tmp/build/nginx-vod-module
+
+# build and install nginx with nginx-rtmp-module and nginx-vod-module, clear working directory after build
 RUN cd nginx-${NGINX_VERSION} && \
     ./configure \
     --sbin-path=/usr/local/sbin/nginx \
@@ -39,7 +41,8 @@ RUN cd nginx-${NGINX_VERSION} && \
     --with-cc-opt="-Wimplicit-fallthrough=0" \
     --with-file-aio \
     --with-threads \
-    --add-module=../nginx-rtmp-module-${RTMP_MODULE_VERSION} && \
+    --add-module=../nginx-rtmp-module-${RTMP_MODULE_VERSION} \
+    --add-module=/tmp/build/nginx-vod-module && \
     make -j $(getconf _NPROCESSORS_ONLN) && \
     make install && \
     mkdir /var/lock/nginx && \
