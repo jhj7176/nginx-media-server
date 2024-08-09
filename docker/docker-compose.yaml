@@ -9,6 +9,6 @@ services:
       - "1935:1935"  # RTMP
       - "8080:8080"  # HLS and DASH
     volumes:
-      - ./media:/media  
-      - ./nginx-config/nginx:/etc/nginx 
+      - ../media:/media  
+      - ../nginx-config/nginx:/etc/nginx 
     restart: unless-stopped
