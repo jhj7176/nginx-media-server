@@ -30,8 +30,6 @@ Refer to /etc/nginx/nginx.conf for details.
 * Run the following:
 ```bash
 docker run -d -p 1935:1935 -p 8080:8080 --name nginx-media-server woonizzooni/nginx-media-server:latest
-# vod streaming url : http://localhost:8080/media/BigBuckBunny.mp4/index.m3u8
-# live streaming url : rtmp://localhost:1935/live/test
 ```
 
 * Build the following:
