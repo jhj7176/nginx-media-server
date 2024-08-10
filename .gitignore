@@ -3,4 +3,4 @@
 .vscode/**
 .*.swa*
 *.mp4
-logs/**
+*.log
