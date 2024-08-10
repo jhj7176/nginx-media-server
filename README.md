@@ -30,6 +30,27 @@ Refer to /etc/nginx/nginx.conf for details.
 * Run the following:
 ```bash
 docker run -d -p 1935:1935 -p 8080:8080 --name nginx-media-server woonizzooni/nginx-media-server:latest
+# vod streaming url : http://localhost:8080/media/BigBuckBunny.mp4/index.m3u8
+# live streaming url : rtmp://localhost:1935/live/test
+```
+
+* Build the following:
+```bash
+git clone https://github.com/jhj7176/nginx-media-server.git
+cd nginx-media-server/docker
+sh build-docker.sh
+# 인터넷 연결 필요, mac 또는 리눅스 환경에서 실행할 것.
+# build-docker.sh에서 docker image repo를 변경필요. 
+```
+
+* Run the following:
+```bash
+git clone https://github.com/jhj7176/nginx-media-server.git
+cd nginx-media-server/docker
+sh start-docker.sh
+# vod streaming : docker-compose.yaml, nginx.conf에서 vod 파일 루트 경로 매핑 필요.
+# vod streaming url : http://localhost:8080/media/BigBuckBunny.mp4/index.m3u8
+# live streaming url : rtmp://localhost:1935/live/test
 ```
 
 ### Publishing Stream with
@@ -49,6 +70,14 @@ docker run -d -p 1935:1935 -p 8080:8080 --name nginx-media-server woonizzooni/ng
         -minrate 1200k -maxrate 1200k -bufsize 1200k  -pix_fmt yuv420p \
         -profile:v baseline -x264-params keyint=48:keyint_min=24:scenecut=0:bframes=0 \
       -c:a libfdk_aac -b:a 128k -ar 44100
+      -f flv rtmp://localhost:1935/live/test
+    ```
+    ```bash
+     ffmpeg -f avfoundation -video_device_index 1 -audio_device_index 0 -i "default" \
+      -c:v libx264 -vf "yadif" -r 24 -s 1280x720 -b:v 1200k \
+      -minrate 1200k -maxrate 1200k -bufsize 1200k  -pix_fmt yuv420p \
+        -profile:v baseline -x264-params keyint=48:keyint_min=24:scenecut=0:bframes=0 \
+      -c:a libfdk_aac -b:a 128k -ar 44100 \
       -f flv rtmp://localhost:1935/live/test
     ```
     - [kor-win-capture-desktop-rtmp](https://woonizzooni.tistory.com/entry/Windows-ffmpeg으로-화면캡처capture-desktop해서-rtmp송출)
