@@ -57,11 +57,11 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && \
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # export 1935 for rtmp, 8080 for hls or dash
-EXPOSE 1935 8080
+# EXPOSE 1935 8080
 
 ## 포트 범위 예시
-#EXPOSE 11935-12000
+EXPOSE 1935-1938
 ## 기본 포트 예시
-#EXPOSE 80 443
+EXPOSE 80 443
 
 CMD ["nginx", "-g", "daemon off;"]

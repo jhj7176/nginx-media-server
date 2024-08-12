@@ -4,3 +4,5 @@
 .*.swa*
 *.mp4
 *.log
+/data/
+/logs/

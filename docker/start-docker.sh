@@ -13,7 +13,7 @@ if echo "$CPATH" | grep -q "/hyeongjin/"; then
     export ME="hyeongjin"
     export MYPORT=11100
 fi
-export COMPOSE_PROJECT_NAME="${PROJECT}_${ME}"
+# export COMPOSE_PROJECT_NAME="${PROJECT}_${ME}"
 
 
 echo "$ME => PORT: $MYPORT"
