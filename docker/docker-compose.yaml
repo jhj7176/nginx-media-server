@@ -1,5 +1,3 @@
-# version: '3.8'
-
 services:
   nginx-media-server:
     image: hyeongjin0319/nginx-media-server:latest
